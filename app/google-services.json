@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "314777549116",
+    "project_id": "kotlinchatapp-22ce4",
+    "storage_bucket": "kotlinchatapp-22ce4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314777549116:android:89ef82edd32e63530b8639",
+        "android_client_info": {
+          "package_name": "com.emirhan.chattapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "314777549116-nh0cogs8pf4kvt8ffbu8aihgpu1el97q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSJaL9rR4a-mtxGhSvqniEl9X0IWb7iWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "314777549116-nh0cogs8pf4kvt8ffbu8aihgpu1el97q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
