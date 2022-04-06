@@ -1,12 +1,11 @@
 package com.emirhan.chattapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -16,7 +15,6 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
-import java.security.acl.Group
 
 class NewMessageActivity : AppCompatActivity() {
 
@@ -35,6 +33,10 @@ class NewMessageActivity : AppCompatActivity() {
         recyclerViewNewMessages = findViewById(R.id.recyclerview_newmessages)
     }
 
+    companion object{
+        val USER_KEY = "USER_KEY"
+    }
+
     private fun fetchUsers(){
         val ref = FirebaseDatabase.getInstance().getReference("/users")
         ref.addListenerForSingleValueEvent(object : ValueEventListener{
@@ -48,6 +50,15 @@ class NewMessageActivity : AppCompatActivity() {
                         adapter.add(UserItem(user))
                     }
 
+                }
+
+                adapter.setOnItemClickListener { item, view ->
+                    val userItem = item as UserItem
+                    val intent = Intent(view.context,ChatLog::class.java)
+                    /*intent.putExtra(USER_KEY,userItem.user.username)*/
+                    intent.putExtra(USER_KEY,userItem.user)
+                    startActivity(intent)
+                    finish()
                 }
 
                 recyclerViewNewMessages.adapter = adapter

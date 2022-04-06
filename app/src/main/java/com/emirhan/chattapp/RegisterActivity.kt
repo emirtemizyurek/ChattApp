@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -143,7 +145,7 @@ class RegisterActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d("RegisterActivity","Finally we saved the user Firebase Database")
 
-                val intent = Intent(this,LastestMessagesActivity::class.java)
+                val intent = Intent(this, LastestMessagesActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
@@ -152,6 +154,7 @@ class RegisterActivity : AppCompatActivity() {
 
 }
 
-class User(val uid: String, val username: String, val profileImageUrl: String){
+@Parcelize
+class User(val uid: String, val username: String, val profileImageUrl: String):Parcelable{
     constructor() : this("","","")
 }
