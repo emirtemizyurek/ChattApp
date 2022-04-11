@@ -21,6 +21,7 @@
     <TextView
         android:id="@+id/textView_from_row"
         android:layout_width="wrap_content"
+        android:textColor="@color/black"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:maxWidth="200dp"

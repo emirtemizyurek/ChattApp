@@ -62,7 +62,9 @@ class ChatLog : AppCompatActivity() {
     }
 
     private fun listenForMessages(){
-        val ref = FirebaseDatabase.getInstance().getReference("/messages")
+        val fromId = FirebaseAuth.getInstance().uid
+        val toId = toUser?.uid
+        val ref = FirebaseDatabase.getInstance().getReference("/user-messages/$fromId/$toId")
         ref.addChildEventListener(object : ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val chatMessage = snapshot.getValue(ChatMessage::class.java)
@@ -82,19 +84,15 @@ class ChatLog : AppCompatActivity() {
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
-                TODO("Not yet implemented")
             }
 
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
         })
     }
@@ -112,12 +110,20 @@ class ChatLog : AppCompatActivity() {
         if(toId == null) return
 
 
-        val reference = FirebaseDatabase.getInstance().getReference("/messages").push()
+        /*val reference = FirebaseDatabase.getInstance().getReference("/messages").push()*/
+
+        val reference = FirebaseDatabase.getInstance().getReference("/user-messages/$fromId/$toId").push()
+
+        val toReference = FirebaseDatabase.getInstance().getReference("/user-messages/$toId/$fromId").push()
+
         val chatMessage = ChatMessage(reference.key!!, text, fromId, toId, System.currentTimeMillis() /1000)
         reference.setValue(chatMessage)
             .addOnSuccessListener {
                 Log.d(TAG,"Saved our chat message: ${reference.key}")
+                editTextChatLog.text.clear()
+                recyclerviewChatLog.scrollToPosition(adapter.itemCount-1)
             }
+        toReference.setValue(chatMessage)
     }
 
 
