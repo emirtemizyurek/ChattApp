@@ -27,14 +27,14 @@
             android:label="@string/title_activity_chat_log" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LastestMessagesActivity" />
+                android:value=".LatestMessagesActivity" />
         </activity>
         <activity
             android:name=".NewMessageActivity"
             android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LastestMessagesActivity" />
+                android:value=".LatestMessagesActivity" />
         </activity>
         <activity
             android:name=".RegisterActivity"
@@ -43,7 +43,7 @@
             android:name=".LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".LastestMessagesActivity"
+            android:name=".LatestMessagesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

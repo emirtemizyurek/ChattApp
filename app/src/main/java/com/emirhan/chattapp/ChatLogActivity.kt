@@ -14,6 +14,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -28,6 +29,8 @@ class ChatLog : AppCompatActivity() {
 
     val adapter = GroupAdapter<ViewHolder>()
 
+    var toUser: User? = null
+
     private lateinit var recyclerviewChatLog: RecyclerView
     private lateinit var sendButton: Button
     private lateinit var editTextChatLog: EditText
@@ -41,10 +44,8 @@ class ChatLog : AppCompatActivity() {
 
 
 
-        val username = intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
-        supportActionBar?.title = username?.username
-
-        /*setupDummyData()*/
+        toUser = intent.getParcelableExtra(NewMessageActivity.USER_KEY)
+        supportActionBar?.title = toUser?.username
 
         listenForMessages()
 
@@ -70,9 +71,10 @@ class ChatLog : AppCompatActivity() {
                     Log.d(TAG, chatMessage.text)
 
                     if (chatMessage.fromId == FirebaseAuth.getInstance().uid){
-                        adapter.add(ChatFromItem(chatMessage.text))
+                        val currentUser = LatestMessagesActivity.currentUser ?:return
+                        adapter.add(ChatFromItem(chatMessage.text, currentUser))
                     } else {
-                        adapter.add(ChatToItem(chatMessage.text))
+                        adapter.add(ChatToItem(chatMessage.text, toUser!!))
                     }
 
                 }
@@ -118,24 +120,18 @@ class ChatLog : AppCompatActivity() {
             }
     }
 
-    private fun setupDummyData(){
 
-
-        val adapter = GroupAdapter<ViewHolder>()
-
-        adapter.add(ChatToItem(""))
-        adapter.add(ChatFromItem(""))
-        adapter.add(ChatToItem(""))
-        adapter.add(ChatFromItem(""))
-
-        recyclerviewChatLog.adapter = adapter
-    }
 }
 
 
-class ChatFromItem(val text: String): Item<ViewHolder>(){
+class ChatFromItem(val text: String,val user:User): Item<ViewHolder>(){
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textView_from_row.text = text
+
+        //load our user image
+        val uri = user.profileImageUrl
+        val targetImageView = viewHolder.itemView.imageView_from_row
+        Picasso.get().load(uri).into(targetImageView)
     }
 
     override fun getLayout(): Int {
@@ -144,9 +140,15 @@ class ChatFromItem(val text: String): Item<ViewHolder>(){
 
 }
 
-class ChatToItem(val text: String): Item<ViewHolder>(){
+class ChatToItem(val text: String, val user:User): Item<ViewHolder>(){
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textView_to_row.text = text
+
+        //load our user image
+        val uri = user.profileImageUrl
+        val targetImageView = viewHolder.itemView.imageView_to_row
+        Picasso.get().load(uri).into(targetImageView)
+
     }
 
     override fun getLayout(): Int {
